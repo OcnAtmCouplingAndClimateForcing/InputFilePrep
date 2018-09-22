@@ -1,21 +1,27 @@
 %Average_Winter_Summer.m
 %Emily Norton
 %June 8, 2018
-%This program opens up a netcdf file and calculates point-by-point averages over the summer (May-Sep) and winter (Nov-Mar) for a given range of years.  Note: Year data corresponds to the final month in the range. Averages from each year are then stored in a horizontal vector (ordered by lon), and all vectors are horizontally organized so each year has its own row.  Ultimately this matrix is exported as a csv (in addition to being saved as a .mat).  Also, a land mask is used to remove land-points (TBD when/where this happens).
+%This program opens up a netcdf file and calculates point-by-point averages over the the months and years of your choosing.  Note: Year data corresponds to the final month in the range. Averages from each year are then stored in a horizontal vector (ordered by lon), and all vectors are horizontally organized so each year has its own row.  Ultimately this matrix is exported as a csv (in addition to being saved as a .mat).  Also, a land mask is used to remove land-points.
 
+clear all
+close all
 
 %Change the following variables
-VAR = 'slp';  %'slp' = Sea Level Pressure; 'skt' = Skin Temp
+VAR = 'skt';  %'slp' = Sea Level Pressure; 'skt' = Skin Temp
 YEARMIN = 1948;  %start year: summer(May-Sep,YEARMIN, avg), winter(Nov, YEARMIN-1 -Mar, YEARMIN)
 YEARMAX = 2018;  %end year
-MOMIN = 5 ;  %start month - numerical input required; 'winter' is Nov - Mar; 'summer' is May - Sep; other periods of interest: slp from Nov - Jan, skt from Feb - Apr
-MOMAX = 9;   %end month - numerical input required
+MOMIN = 2 ;  %start month - numerical input required; 'winter' is Nov - Mar; 'summer' is May - Sep; other periods of interest: slp from Nov - Jan, skt from Feb - Apr
+MOMAX = 4;   %end month - numerical input required
 
-
-%FILENM = '/home/disk/clark/emilyln/FATE_Hunsicker_Bond_OcnAtmCoupling/SkinTemp_NCEP_1948to2018.nc';
-FILENM = '/home/disk/clark/emilyln/FATE_Hunsicker_Bond_OcnAtmCoupling/SLP_NCEP_1948to2018.nc';
 
 %%%-----------Shouldn't need to change below this line--------------
+switch VAR
+case 'skt'
+FILENM = '/home/disk/clark/emilyln/FATE_Hunsicker_Bond_OcnAtmCoupling/SkinTemp_NCEP_1948to2018.nc';
+
+case 'slp'
+FILENM = '/home/disk/clark/emilyln/FATE_Hunsicker_Bond_OcnAtmCoupling/SLP_NCEP_1948to2018.nc';
+end   %switch VAR filename
 
 %%Open up netcdf file
 ncid = netcdf.open(FILENM);
